@@ -35,10 +35,17 @@ fn main() -> ! {
 
     loop {
         let mut byte = [0u8; 1];
-        if uart.read(&mut byte).is_ok() {
-            let _ = uart.write(&byte);
+
+        match uart.read(&mut byte) {
+            Ok(_) => {
+                let _ = uart.write(&byte);
+            }
+            Err(_) => {
+                // Known limitation: RX errors (framing/overrun) are not yet
+                // cleared here. esp-hal exposes check_for_rx_errors() for this,
+                // but it's gated behind the `unstable` feature flag, which this
+                // project doesn't currently enable. Tracked for a future pass.
+            }
         }
     }
-
-    // for inspiration have a look at the examples at https://github.com/esp-rs/esp-hal/tree/esp-hal-v1.1.0/examples
 }
