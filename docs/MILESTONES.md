@@ -46,11 +46,11 @@ feat/polish          ← Milestone 5 (not started)
 
 **Definition of done:**
 
-- [ ] UART0 configured with correct baud rate and pins
-- [ ] Blocking echo working in Wokwi simulation (type a character, see it returned)
-- [ ] Code reviewed and approved by Juan
-- [ ] Merged into `develop`
-- [ ] `develop` merged into `main`, tagged `v0.1.0`
+- [X] UART0 configured with correct baud rate and pins
+- [X] Blocking echo working in Wokwi simulation (type a character, see it returned)
+- [X] Code reviewed and approved by Juan
+- [X] Merged into `develop`
+- [X] `develop` merged into `main`, tagged `v0.1.0`
 
 **Juan's role this milestone:** Review the PR. Read through the UART config code and make sure you understand how the baud rate is calculated and which pins are used — you'll be building on top of this in Milestone 2.
 
