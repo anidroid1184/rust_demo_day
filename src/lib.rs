@@ -1,3 +1,5 @@
+//! Central module that declares the public API of the crate.
+
 #![no_std]
 
 pub mod command_parser;

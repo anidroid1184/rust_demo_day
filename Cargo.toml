@@ -8,6 +8,7 @@ rust-version = "1.88"
 version = "0.1.0"
 
 
+
 [[bin]]
 name = "rust-demo-day"
 path = "./src/bin/main.rs"
