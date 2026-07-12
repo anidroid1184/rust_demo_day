@@ -41,30 +41,34 @@ fn main() -> ! {
 
     // Select UART0 (GPIO1 - TX, GPIO3 - RX) for communication
     let mut uart = uart_handler::init_uart(peripherals.UART0);
+    // let mut blue_led = esp_hal::gpio::Output::new(peripherals.GPIO26, esp_hal::gpio::Level::Low);
 
     // Reserve ~96kB of reclaimed SRAM for the heap allocator.
     // Required for dynamic memory (Box, Vec, etc.) in later milestones.
     esp_alloc::heap_allocator!(#[esp_hal::ram(reclaimed)] size: 98768);
 
     loop {
-        // Single-byte buffer to hold the incoming byte
-        let mut rx_byte = [0u8; 1];
 
-        // Read one byte from UART. If successful, echo it back.
-        match uart.read(&mut rx_byte) {
-            Ok(_) => {
-                // visual response, send a byte and response byte
-                let _ = uart.write(b"\r\nsendbyte: ");
+        // read share buffer to take byte sended
+        let readed_byte = critical_section::with(|cs| {
+            // print only one time the message
+            let _ = uart.write(b"\n\rstarting...");
+            // return the taked byte
+            // IMPORTANT: don't add a ";" at the end
+            rust_demo_day::uart_handler::SHARED_BYTE.borrow(cs).borrow_mut().take()
+        });
 
-                // Send the received byte back (blocking echo)
-                let _ = uart.write(&rx_byte);
-            }
-            Err(_) => {
-                // Known limitation: RX errors (framing/overrun) are not yet
-                // cleared here. esp-hal exposes check_for_rx_errors() for this,
-                // but it's gated behind the `unstable` feature flag, which this
-                // project doesn't currently enable. Tracked for a future pass.
-            }
+        // interruption
+        if let Some(byte) = readed_byte {
+            let _ = uart.write(b"\n\rwating byte");
+
+            // temporal buffer 
+            let rx_byte = [byte, 1];
+            let _ = uart.write(b"readedbyte: ");
+            let _ = uart.write(&rx_byte);
         }
+
+        // blue_led.toggle();
+
     }
 }
