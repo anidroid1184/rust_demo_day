@@ -53,6 +53,9 @@ fn main() -> ! {
         // Read one byte from UART. If successful, echo it back.
         match uart.read(&mut rx_byte) {
             Ok(_) => {
+                // visual response, send a byte and response byte
+                let _ = uart.write(b"\r\nsendbyte: ");
+
                 // Send the received byte back (blocking echo)
                 let _ = uart.write(&rx_byte);
             }
