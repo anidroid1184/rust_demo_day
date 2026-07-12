@@ -48,13 +48,13 @@ fn main() -> ! {
 
     loop {
         // Single-byte buffer to hold the incoming byte
-        let mut byte = [0u8; 1];
+        let mut rx_byte = [0u8; 1];
 
         // Read one byte from UART. If successful, echo it back.
-        match uart.read(&mut byte) {
+        match uart.read(&mut rx_byte) {
             Ok(_) => {
                 // Send the received byte back (blocking echo)
-                let _ = uart.write(&byte);
+                let _ = uart.write(&rx_byte);
             }
             Err(_) => {
                 // Known limitation: RX errors (framing/overrun) are not yet
