@@ -202,3 +202,26 @@ Both of us commit to this interface before either branch diverges significantly 
 | 3 — Ring Buffer | feat/ring-buffer | Ekojoe | Juan | v0.3.0 |
 | 4 — Parser | feat/command-parser | Both | Both | v0.4.0 |
 | 5 — Polish | feat/polish | Both | Both | v1.0.0-demo |
+
+---
+
+## Ideas & Proposals
+
+A place to capture ideas that could extend or enhance the demo, outside the
+core milestone scope.
+
+### UART bit‑visualisation with LEDs (Juan)
+
+Visualise a UART frame as it is transmitted by wiring 10 LEDs to a second ESP32
+and lighting them up bit by bit (start bit, 8 data bits, stop bit). This would
+show the serial protocol "in flight" — a concrete visual aid for understanding
+UART at the electrical level.
+
+**Constraints to explore:**
+- The receiving ESP32 sees the fully reconstructed byte from its hardware UART,
+  not individual bits. Bit‑level capture would need a different approach (bit‑
+  banging on a GPIO, or tapping the TX line directly).
+- Adding a second ESP32 to the Wokwi simulation requires updating `diagram.json`
+  and `wokwi.toml`.
+- This is a visual polish / demo enhancement, not a core feature — best scoped
+  to milestone 5 or as a stretch goal after the CLI is functional.
