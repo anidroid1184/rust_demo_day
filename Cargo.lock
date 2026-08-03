@@ -1034,16 +1034,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-demo-day"
-version = "0.2.0"
-dependencies = [
- "critical-section",
- "esp-alloc",
- "esp-bootloader-esp-idf",
- "esp-hal",
-]
-
-[[package]]
 name = "rustversion"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1267,6 +1257,16 @@ name = "typenum"
 version = "1.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20"
+
+[[package]]
+name = "uart-command-rust"
+version = "0.2.0"
+dependencies = [
+ "critical-section",
+ "esp-alloc",
+ "esp-bootloader-esp-idf",
+ "esp-hal",
+]
 
 [[package]]
 name = "ufmt-write"

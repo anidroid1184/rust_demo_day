@@ -18,7 +18,7 @@ use esp_hal::clock::CpuClock;
 use esp_hal::gpio::{Level, Output, OutputConfig};
 use esp_hal::time::{Duration, Instant};
 use esp_hal::main;
-use rust_demo_day::uart_handler;
+use uart_command_rust::uart_handler;
 
 /// Catches unrecoverable errors and halts execution.
 /// Embedded targets have nowhere to return to, so we loop forever.
@@ -56,7 +56,7 @@ fn main() -> ! {
         let read_byte = critical_section::with(|cs| {
             // return the taked byte
             // IMPORTANT: don't add a ";" at the end
-            rust_demo_day::uart_handler::SHARED_BYTE
+            uart_command_rust::uart_handler::SHARED_BYTE
                 .borrow(cs)
                 .borrow_mut()
                 .take()

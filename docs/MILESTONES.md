@@ -1,7 +1,7 @@
 # MILESTONES.md — Real-Time UART CLI for ESP32
 
 **Team:** Ekojoe Covenant Lemom (AlphaCode) & Juan Sebastian Valencia Londoño
-**Repo:** <https://github.com/anidroid1184/rust_demo_day>
+**Repo:** <https://github.com/anidroid1184/uart-command-rust>
 **Working style:** Fully async and remote. No live sessions required. Progress is measured by branch readiness, not by time spent online together.
 
 ---

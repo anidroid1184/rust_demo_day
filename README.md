@@ -1,4 +1,4 @@
-# rust-demo-day
+# uart-command-rust
 
 Real-time UART CLI for ESP32, built in Rust (bare-metal, `no_std`).
 
@@ -126,7 +126,7 @@ The simulator uses `wokwi.toml` to locate the firmware binary and
 ## Project Structure
 
 ```
-rust-demo-day/
+uart-command-rust/
 ├── .cargo/
 │   └── config.toml          # Target: xtensa-esp32-none-elf, build-std, rustflags
 ├── src/
@@ -157,12 +157,12 @@ cargo build
 ```
 
 The binary is written to
-`target/xtensa-esp32-none-elf/debug/rust-demo-day`.
+`target/xtensa-esp32-none-elf/debug/uart-command-rust`.
 
 ### Flash and monitor (physical board)
 
 ```bash
-espflash flash --monitor --chip esp32 target/xtensa-esp32-none-elf/debug/rust-demo-day
+espflash flash --monitor --chip esp32 target/xtensa-esp32-none-elf/debug/uart-command-rust
 ```
 
 ### Simulate (Wokwi)
@@ -208,7 +208,7 @@ source $HOME/export-esp.sh
 ### Wokwi does not start or shows a blank screen
 
 1. Verify `wokwi.toml` points to the correct ELF path:
-   `target/xtensa-esp32-none-elf/debug/rust-demo-day`
+   `target/xtensa-esp32-none-elf/debug/uart-command-rust`
 2. Run `cargo build` first so the binary exists.
 3. Check `diagram.json` for correct pin assignments.
 
@@ -248,4 +248,4 @@ simulation setup.
 - **Ekojoe Covenant Lemom**
 - **Juan Sebastian Valencia Londoño**
 
-Repository: <https://github.com/anidroid1184/rust_demo_day>
+Repository: <https://github.com/anidroid1184/uart-command-rust>

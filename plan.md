@@ -2,7 +2,7 @@
 
 ## 1. Metadatos del Proyecto
 * **Equipo:** Ekojoe Covenant Lemom & Juan Sebastian Valencia Londoño
-* **Repositorio:** [github.com/anidroid1184/rust_demo_day](https://github.com/anidroid1184/rust_demo_day)
+* **Repositorio:** [github.com/anidroid1184/uart-command-rust](https://github.com/anidroid1184/uart-command-rust)
 * **Target Arquitectura:** `xtensa-esp32-none-elf` (ESP32 Clásico, Xtensa LX6)
 * **Framework:** `esp-hal` (Ambiente bare-metal, `no_std`)
 * **Herramienta de Simulación:** Wokwi (Extensión de VS Code)
@@ -18,7 +18,7 @@ Diseñar e implementar una interfaz de línea de comandos (CLI) en tiempo real p
 El proyecto mantendrá una separación estricta de responsabilidades (Hardware, Concurrencia, Lógica) para facilitar el desarrollo en paralelo y asegurar la modularidad requerida para la defensa técnica:
 
 ```plain
-rust_demo_day/
+uart-command-rust/
 ├── .cargo/
 │   └── config.toml          # Configuración del linker y argumentos de compilación para Xtensa
 ├── docs/
@@ -49,7 +49,7 @@ cargo install esp-generate
 cargo install espflash
 
 # 3. Inicializar el entorno (Estructura de compilación y scripts del linker correctos)
-esp-generate --chip esp32 -o vscode rust_demo_day
+esp-generate --chip esp32 -o vscode uart-command-rust
 ```
 
 Nota: Para habilitar la simulación local en VS Code, abrir la paleta de comandos con F1 y ejecutar Wokwi: Request a new License.
