@@ -42,21 +42,18 @@ fn main() -> ! {
     esp_alloc::heap_allocator!(#[esp_hal::ram(reclaimed)] size: 98768);
 
     // Select UART0 (GPIO1 - TX, GPIO3 - RX) for communication
-    uart_handler::init_uart(peripherals.UART0);
     let mut consumer = ring_buffer::init_ring_buffer();
+    uart_handler::init_uart(peripherals.UART0);
 
     loop {
         if let Ok(read_grant) = consumer.read() {
-            let len = read_grant.buf().len();
-
             critical_section::with(|cs| {
-                if let Some(uart) = uart_handler::SHARED_UART.borrow(cs).borrow_mut().as_mut() {
-                    let _ = uart.write(read_grant.buf());
+                if let Some(uart) = uart_handler::SHARED_UART.borrow(cs).borrow_mut().as_mut()
+                    && let Ok(written) = uart.write(read_grant.buf())
+                {
+                    read_grant.release(written);
                 }
             });
-
-            read_grant.release(len);
         }
     }
 }
-
