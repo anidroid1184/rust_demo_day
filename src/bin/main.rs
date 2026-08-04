@@ -15,10 +15,8 @@
 )]
 
 use esp_hal::clock::CpuClock;
-use esp_hal::gpio::{Level, Output, OutputConfig};
-use esp_hal::time::{Duration, Instant};
 use esp_hal::main;
-use uart_command_rust::uart_handler;
+use uart_command_rust::{ring_buffer, uart_handler};
 
 /// Catches unrecoverable errors and halts execution.
 /// Embedded targets have nowhere to return to, so we loop forever.
@@ -41,42 +39,24 @@ fn main() -> ! {
     let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
     let peripherals = esp_hal::init(config);
 
-    // Select UART0 (GPIO1 - TX, GPIO3 - RX) for communication
-    let mut uart = uart_handler::init_uart(peripherals.UART0);
-    let mut blue_led = Output::new(peripherals.GPIO26, Level::High, OutputConfig::default());
-
-    // Reserve ~96kB of reclaimed SRAM for the heap allocator.
-    // Required for dynamic memory (Box, Vec, etc.) in later milestones.
     esp_alloc::heap_allocator!(#[esp_hal::ram(reclaimed)] size: 98768);
 
-    // print only one time the message
-    let _ = uart.write(b"\n\rstarting...");
+    // Select UART0 (GPIO1 - TX, GPIO3 - RX) for communication
+    uart_handler::init_uart(peripherals.UART0);
+    let mut consumer = ring_buffer::init_ring_buffer();
+
     loop {
-        // read share buffer to take byte sended
-        let read_byte = critical_section::with(|cs| {
-            // return the taked byte
-            // IMPORTANT: don't add a ";" at the end
-            uart_command_rust::uart_handler::SHARED_BYTE
-                .borrow(cs)
-                .borrow_mut()
-                .take()
-        });
+        if let Ok(read_grant) = consumer.read() {
+            let len = read_grant.buf().len();
 
-        // interruption
-        if let Some(byte) = read_byte {
-            let _ = uart.write(b"\n\rwaiting byte...");
-            // temporal buffer
-            let rx_byte = [byte];
-            let _ = uart.write(b"\nreadbyte: ");
-            let _ = uart.write(&rx_byte);
+            critical_section::with(|cs| {
+                if let Some(uart) = uart_handler::SHARED_UART.borrow(cs).borrow_mut().as_mut() {
+                    let _ = uart.write(read_grant.buf());
+                }
+            });
+
+            read_grant.release(len);
         }
-
-        blue_led.toggle();
-        blocking_delay(Duration::from_millis(500));
     }
 }
 
-fn blocking_delay(duration: Duration) {
-    let delay_start = Instant::now();
-    while delay_start.elapsed() < duration {}
-}
