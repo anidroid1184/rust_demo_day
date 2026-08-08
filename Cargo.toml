@@ -11,13 +11,10 @@ path = "./src/bin/main.rs"
 
 [dependencies]
 esp-hal = { version = "~1.1.0", features = ["esp32", "unstable"] }
-
-
 esp-bootloader-esp-idf = { version = "0.5.0", features = ["esp32"] }
-
 critical-section = "1.2.0"
 esp-alloc = "0.10.0"
-
+bbqueue = "0.5"
 
 # For fine tuning these settings, please refer to https://doc.rust-lang.org/cargo/reference/profiles.html
 [profile.dev]
